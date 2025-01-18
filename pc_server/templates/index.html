@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Image</title>
+    <script>
+        // Set up an event listener for Server-Sent Events (SSE)
+        const eventSource = new EventSource("/events");
+
+        eventSource.onmessage = function(event) {
+            const timestamp = event.data;  // Timestamp sent from the server
+            const imgElement = document.getElementById("esp32Image");
+            const timestampElement = document.getElementById("imageTimestamp");
+
+            // Update the image and timestamp
+            imgElement.src = `/image?timestamp=${new Date().getTime()}`;  // Avoid caching
+            timestampElement.innerText = `Image captured at: ${timestamp}`;  // Display the timestamp
+        };
+    </script>
+</head>
+<body>
+    <h1>Latest Image from ESP32</h1>
+    <img id="esp32Image" src="/image" alt="Latest image from ESP32" width="640">
+    <p id="imageTimestamp">No image received yet.</p>  <!-- Placeholder for the timestamp -->
+</body>
+</html>
